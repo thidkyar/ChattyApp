@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700,700i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=Lobster');
 
 body {
   background: white;
@@ -10,7 +12,7 @@ body {
 }
 
 .chatbar {
-  background: tomato;
+  background: rgb(56, 83, 158);
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -41,6 +43,7 @@ body {
 .message {
   display: flex;
   padding: 5px;
+  font-family: 'Lato', sans-serif;
 }
 
 .message.system {
@@ -65,8 +68,9 @@ body {
 }
 
 .navbar {
-  background: tomato;
+  background: rgb(56, 83, 158);
   border-bottom: 1px solid black;
+  box-shadow: -4px 5px 20px #888888;
   height: 60px;
   left: 0;
   padding: 0 10px;
@@ -76,16 +80,19 @@ body {
 }
 
 .navbar-brand {
-  color: inherit;
+  color: white;
   display: block;
   float: left;
+  font-family: 'Lobster', cursive;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 38px;
   height: 60px;
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
 }
+
+
 h1 {
   color: tomato;
 }
