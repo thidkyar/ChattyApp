@@ -3,7 +3,7 @@ import MessageList from "./MessageList.jsx";
 
 class Message extends Component {
   render() {
-    console.log("123123123123", this.props);
+    console.log('BLAAAAH', this.props)
     if (this.props.type === "incomingMessage") {
       return (
         <div>

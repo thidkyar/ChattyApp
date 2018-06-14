@@ -33,19 +33,21 @@ wss.on("connection", ws => {
   // console.log('CHECK ONE', numberOfClients)
 
   ws.on("message", message => {
-    console.log("1234324", message);
+    console.log('CHECKING THISSS', message)
     const uuid = uuidv4();
-    console.log(uuid);
     const newMessage = JSON.parse(message);
     newMessage.id = uuid;
-    if (newMessage.type === "postMessage") {
-      newMessage.type = "incomingMessage";
-    } else {
-      newMessage.type = "incomingNotification";
+    
+    switch (newMessage.type) {
+      case 'postMessage':
+        newMessage.type = 'incomingMessage'
+        break;
+      case 'postNotification':
+        newMessage.type = 'incomingNotification'
+        break;
+      default:
+        throw new Error(`Unknown event Type: ${message.type}` )
     }
-    console.log("SERVER SIDE", newMessage);
-    // console.log(`User ${newMessage.id} ${newMessage.username} said ${newMessage.content}`)
-
     wss.clients.forEach(client => {
       client.send(JSON.stringify(newMessage, wss.clients.size));
     });
