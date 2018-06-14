@@ -21,6 +21,16 @@ const wss = new SocketServer({ server });
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  users = {
+    type: "userCountStatus",
+    userCount: wss.clients.size
+  };
+  console.log(users)
+  wss.clients.forEach(client => {
+    client.send(JSON.stringify(users));
+  });
+  // console.log('WYYYEYYEY', ws)
+  // console.log('CHECK ONE', numberOfClients)
 
   ws.on('message', message => {
     console.log('1234324',message)
@@ -28,16 +38,27 @@ wss.on('connection', (ws) => {
     console.log(uuid)
     const newMessage = JSON.parse(message)
     newMessage.id = uuid
-    newMessage.type = 'incomingMessage'
+    if (newMessage.type === 'postMessage') {
+      newMessage.type = 'incomingMessage'
+    } else {
+      newMessage.type = 'incomingNotification'
+    }
     console.log('SERVER SIDE', newMessage)
     // console.log(`User ${newMessage.id} ${newMessage.username} said ${newMessage.content}`)
 
+    
     wss.clients.forEach(client => {
-      client.send(JSON.stringify(newMessage));
+      client.send(JSON.stringify(newMessage, wss.clients.size));
     })
   })
 
   
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Clients are now: ', wss.clients.size)
+    const disconnectedClient = wss.clients.size
+    // this.send(JSON.stringify(disconnectedClient))
+console.log('Client disconnected');
+
+  })
 });

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Nav from './navBar.jsx'
 import ChatBar from './ChatBar.jsx'
 import MessageList from './MessageList.jsx'
+import { IncomingMessage } from "http";
 
 class App extends Component {
   constructor(props) {
@@ -9,27 +10,38 @@ class App extends Component {
 
     this.state = {
       loading: true,
-        currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-        messages: []
+        currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+        messages: [],
+        activeUsers: {}
       }
   }
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
-    
-    this.socket.onmessage = (event) => {
-      // console.log('BLOOOP BLAAAP', event);
+
+    this.socket.onmessage = (event) => {      // console.log('BLOOOP BLAAAP', event);
       const parsedEvent = JSON.parse(event.data)
-      const newMessage = {id: parsedEvent.id, username: parsedEvent.username, content: parsedEvent.content};
+
+      if (parsedEvent.type === 'incomingNotification'){
+        parsedEvent.content = `${parsedEvent.oldname} changed their name to ${parsedEvent.username}`
+      } else if (parsedEvent.type === 'userCountStatus') {
+        this.setState({activeUsers:parsedEvent})
+      }
+      const activeUsers = parsedEvent
+      console.log('ASDKJHSKJDHA', activeUsers)
+      const newMessage = {id: parsedEvent.id, username: parsedEvent.username, content: parsedEvent.content, type: parsedEvent.type};
+
       const messages = this.state.messages.concat(newMessage)
-      // console.log(newMessage)
+      console.log('WAAAATSSSSS THIS', messages)
+      
+
       this.setState({
         messages:messages
       })
       // code to handle incoming message
     }
     this.socket.onopen = (event) => {
-      // this.socket.send("Here's some text that the server is urgently awaiting!"); 
+      // console.log(event)
       console.log("Connected to Server")
     };
     // console.log('Connected to server')
@@ -55,17 +67,17 @@ class App extends Component {
 
   _submitUser = (username) => {
     const newUser = {name: username};
-    const notificationObject = {oldname: this.state.currentUser.name, name: username, type: 'postNotification'}
+    const notificationObject = {oldname: this.state.currentUser.name, username: username, type: 'postNotification'}
     // console.log('CHECKING THIS MATE', typeof newUser)
     this.socket.send(JSON.stringify(notificationObject))
-    console.log(notificationObject)
+    // console.log(notificationObject)
     this.setState({currentUser: newUser})
   }
 
   render() { 
     return (
       <div>
-        <Nav/>
+        <Nav activeUsers={this.state.activeUsers} />
         <MessageList messages={this.state.messages}/>
         <ChatBar submitUser = {this._submitUser} submitMessage={this._submitMessage} currentUser={this.state.currentUser}/>
       </div>

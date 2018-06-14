@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700,700i,900,900i');
+// @import url('https://fonts.googleapis.com/css?family=Lato:400,700,700i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Lobster');
 
 body {
@@ -49,6 +49,7 @@ body {
 .message.system {
   font-style: italic;
   padding: 5px 20px;
+  font-weight: 300;
 }
 
 .message-content,
@@ -92,6 +93,11 @@ body {
   text-decoration: none;
 }
 
+.activeUsers {
+  float: right;
+  color: white;
+  font-size: 17px;
+}
 
 h1 {
   color: tomato;
