@@ -5,7 +5,7 @@ ChattyApp is a single-page instant-messaging chatroom app using React and node.j
 ## Screenshots
 
 !["main page"]
-(https://github.com/thidkyar/ChattyApp/blob/master/screenshots/Main.png)
+(https://github.com/thidkyar/ChattyApp/blob/master/screenshots/Main.png?raw=true)
 
 ### Dependencies
 
